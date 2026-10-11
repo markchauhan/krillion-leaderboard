@@ -4,6 +4,8 @@ A leaderboard for my friend group's daily Krillion scores. Paste the share text 
 
 **Live:** https://markchauhan.github.io/krillion-leaderboard/
 
+![Screenshot of the leaderboard](docs/screenshot.png)
+
 ## What it does
 
 - **Daily board.** One puzzle's scores, ranked, with ties sharing a rank (1, 2, 2, 4). It opens on the latest puzzle, with buttons to step to earlier ones.
