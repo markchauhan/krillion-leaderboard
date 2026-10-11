@@ -94,3 +94,19 @@ export function dedupe(scores: Score[]): Score[] {
 
   return [...latest.values()]
 }
+// Puzzle numbers that have at least one score, lowest first.
+export function puzzleNumbers(scores: Score[]): number[] {
+  return [...new Set(scores.map((s) => s.puzzle))].sort((a, b) => a - b)
+}
+
+// The nearest puzzle with scores before (-1) or after (+1) the current one,
+// or null at either end. Skips numbers nobody played.
+export function adjacentPuzzle(
+  puzzles: number[],
+  current: number,
+  step: -1 | 1,
+): number | null {
+  const candidates = puzzles.filter((p) => (step === 1 ? p > current : p < current))
+  if (candidates.length === 0) return null
+  return step === 1 ? Math.min(...candidates) : Math.max(...candidates)
+}

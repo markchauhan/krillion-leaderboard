@@ -1,15 +1,37 @@
+import { adjacentPuzzle } from '../lib/rank'
 import type { RankedScore } from '../lib/rank'
 
 type Props = {
-  puzzle: number
+  puzzles: number[]
+  selected: number
   rows: RankedScore[]
+  onSelect: (puzzle: number) => void
 }
 
-// One day's leaderboard as a table.
-export function DailyBoard({ puzzle, rows }: Props) {
+// One day's leaderboard as a table, with buttons to step between days.
+export function DailyBoard({ puzzles, selected, rows, onSelect }: Props) {
+  const previous = adjacentPuzzle(puzzles, selected, -1)
+  const next = adjacentPuzzle(puzzles, selected, 1)
+
   return (
     <section>
-      <h2>Krillion #{puzzle}</h2>
+      <h2>Krillion #{selected}</h2>
+      <div className="puzzle-nav">
+        <button
+          type="button"
+          disabled={previous === null}
+          onClick={() => previous !== null && onSelect(previous)}
+        >
+          ← Previous
+        </button>
+        <button
+          type="button"
+          disabled={next === null}
+          onClick={() => next !== null && onSelect(next)}
+        >
+          Next →
+        </button>
+      </div>
       <table>
         <thead>
           <tr>

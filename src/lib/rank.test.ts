@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import type { Score } from './types'
-import { allTime, dailyRanking, dedupe, latestPuzzle } from './rank'
+import {
+  adjacentPuzzle,
+  allTime,
+  dailyRanking,
+  dedupe,
+  latestPuzzle,
+  puzzleNumbers,
+} from './rank'
 
 function score(puzzle: number, name: string, points: number): Score {
   return { puzzle, name, score: points, emojis: [] }
@@ -52,8 +59,11 @@ describe('allTime', () => {
       games: 2,
       total: 660,
       average: 330,
+      spread: 30,
+      rating: 315,
       best: 360,
       wins: 2,
+      ranked: false,
     })
   })
 
@@ -80,5 +90,39 @@ describe('dedupe', () => {
 
   it('keeps the same player on different puzzles', () => {
     expect(dedupe(scores)).toHaveLength(5)
+  })
+})
+
+describe('puzzleNumbers', () => {
+  it('lists each puzzle once, lowest first', () => {
+    expect(puzzleNumbers(scores)).toEqual([85, 86])
+  })
+
+  it('returns an empty list when there are no scores', () => {
+    expect(puzzleNumbers([])).toEqual([])
+  })
+})
+
+describe('adjacentPuzzle', () => {
+  const puzzles = [71, 72, 74, 75]
+
+  it('steps to the neighbouring puzzle', () => {
+    expect(adjacentPuzzle(puzzles, 74, 1)).toBe(75)
+    expect(adjacentPuzzle(puzzles, 72, -1)).toBe(71)
+  })
+
+  it('skips a puzzle nobody played', () => {
+    expect(adjacentPuzzle(puzzles, 72, 1)).toBe(74)
+    expect(adjacentPuzzle(puzzles, 74, -1)).toBe(72)
+  })
+
+  it('returns null at either end', () => {
+    expect(adjacentPuzzle(puzzles, 71, -1)).toBeNull()
+    expect(adjacentPuzzle(puzzles, 75, 1)).toBeNull()
+  })
+
+  it('returns null when there is only one puzzle', () => {
+    expect(adjacentPuzzle([86], 86, 1)).toBeNull()
+    expect(adjacentPuzzle([86], 86, -1)).toBeNull()
   })
 })

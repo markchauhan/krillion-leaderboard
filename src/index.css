@@ -212,3 +212,26 @@ tbody tr:first-child td {
     transition: width 200ms ease-out;
   }
 }
+
+/* Pulls the line up under the title, which leaves a gap for the sections. */
+.summary {
+  margin: -1.25rem 0 1.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.puzzle-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.puzzle-nav button {
+  font: inherit;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+}
+
+.puzzle-nav button:disabled {
+  cursor: default;
+}
