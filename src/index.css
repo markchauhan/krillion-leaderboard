@@ -70,3 +70,25 @@ th {
 tbody tr:first-child td {
   font-weight: 600;
 }
+
+.submit {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 24rem;
+}
+
+.submit input,
+.submit textarea,
+.submit button {
+  font: inherit;
+  padding: 0.5rem 0.6rem;
+}
+
+.submit button {
+  justify-self: start;
+  cursor: pointer;
+}
+
+.error {
+  color: #d1242f;
+}

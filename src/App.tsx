@@ -1,10 +1,11 @@
-import { DailyBoard } from './components/DailyBoard'
 import { AllTimeTable } from './components/AllTimeTable'
-import { allTime, dailyRanking, latestPuzzle } from './lib/rank'
+import { DailyBoard } from './components/DailyBoard'
+import { SubmitScore } from './components/SubmitScore'
 import { useScores } from './hooks/useScores'
+import { allTime, dailyRanking, latestPuzzle } from './lib/rank'
 
 function App() {
-  const state = useScores()
+  const { state, reload } = useScores()
 
   if (state.status === 'loading') {
     return (
@@ -26,6 +27,7 @@ function App() {
 
   const { scores } = state
   const latest = latestPuzzle(scores)
+  const players = allTime(scores)
 
   return (
     <main>
@@ -33,7 +35,8 @@ function App() {
       {latest !== null && (
         <DailyBoard puzzle={latest} rows={dailyRanking(scores, latest)} />
       )}
-      <AllTimeTable players={allTime(scores)} />
+      <AllTimeTable players={players} />
+      <SubmitScore players={players.map((p) => p.name)} onSubmitted={reload} />
     </main>
   )
 }

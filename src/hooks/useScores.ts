@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { loadScores } from '../lib/loadScores'
 import type { Score } from '../lib/types'
 
@@ -7,28 +7,31 @@ export type ScoresState =
   | { status: 'error'; message: string }
   | { status: 'ready'; scores: Score[] }
 
-export function useScores(): ScoresState {
+// Loads scores when the page opens, and again whenever reload() is called.
+export function useScores() {
   const [state, setState] = useState<ScoresState>({ status: 'loading' })
+  const [version, setVersion] = useState(0)
 
   useEffect(() => {
-    // If the component unmounts before the fetch resolves, we must not call
-    // setState — React would warn and we would leak the stale response.
+    // If the component goes away before the request finishes,
+    // skip the update instead of writing to something that's gone.
     let cancelled = false
 
     loadScores()
       .then((scores) => {
         if (!cancelled) setState({ status: 'ready', scores })
       })
-      .catch((err: unknown) => {
-        if (cancelled) return
-        const message = err instanceof Error ? err.message : String(err)
-        setState({ status: 'error', message })
+      .catch((e: unknown) => {
+        const message = e instanceof Error ? e.message : 'Unknown error'
+        if (!cancelled) setState({ status: 'error', message })
       })
 
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [version])
 
-  return state
+  const reload = useCallback(() => setVersion((v) => v + 1), [])
+
+  return { state, reload }
 }
