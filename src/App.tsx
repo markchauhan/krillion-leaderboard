@@ -1,5 +1,7 @@
 import { AllTimeTable } from './components/AllTimeTable'
 import { DailyBoard } from './components/DailyBoard'
+import { LeaderBars } from './components/LeaderBars'
+import { ScoreChart } from './components/ScoreChart'
 import { SubmitScore } from './components/SubmitScore'
 import { useScores } from './hooks/useScores'
 import { allTime, dailyRanking, latestPuzzle } from './lib/rank'
@@ -32,11 +34,13 @@ function App() {
   return (
     <main>
       <h1>Krillion Leaderboard</h1>
+      <SubmitScore players={players.map((p) => p.name)} onSubmitted={reload} />
       {latest !== null && (
         <DailyBoard puzzle={latest} rows={dailyRanking(scores, latest)} />
       )}
       <AllTimeTable players={players} />
-      <SubmitScore players={players.map((p) => p.name)} onSubmitted={reload} />
+      <LeaderBars players={players} />
+      <ScoreChart scores={scores} />
     </main>
   )
 }

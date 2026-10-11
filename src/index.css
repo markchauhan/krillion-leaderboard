@@ -4,6 +4,12 @@
   --fg: #14202b;
   --muted: #5b6b7a;
   --line: #d5dde5;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
   line-height: 1.4;
 }
@@ -14,6 +20,12 @@
     --fg: #e6edf3;
     --muted: #93a1b0;
     --line: #243241;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
   }
 }
 
@@ -91,4 +103,112 @@ tbody tr:first-child td {
 
 .error {
   color: #d1242f;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart .grid {
+  stroke: var(--line);
+}
+
+.chart .axis {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.chart .crosshair {
+  stroke: var(--muted);
+}
+
+/* A ring in the background color keeps overlapping dots distinct. */
+.chart .dot {
+  stroke: var(--bg);
+  stroke-width: 1.5;
+}
+
+.legend,
+.readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+  align-items: center;
+}
+
+.legend button {
+  font: inherit;
+  color: var(--fg);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  cursor: pointer;
+}
+
+.legend button[aria-pressed='true'] {
+  border-color: var(--muted);
+}
+
+.swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  margin-right: 0.35rem;
+}
+
+.readout {
+  color: var(--muted);
+  font-size: 0.9rem;
+  min-height: 1.5rem;
+}
+
+.leader-bars ol {
+  --value-width: 3.5rem;
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.leader-bars li {
+  display: flex;
+  align-items: center;
+}
+
+.leader-bars .name {
+  flex: none;
+  width: 1.5rem;
+  font-weight: 600;
+}
+
+/* The bar scales within the row minus the name and value columns, so the
+   longest bar's number still fits on the row. */
+.leader-bars .bar {
+  flex: none;
+  width: calc((100% - 1.5rem - var(--value-width)) * var(--fraction));
+  height: 1rem;
+  background: var(--series-1);
+  border-radius: 0 4px 4px 0;
+}
+
+.leader-bars .value {
+  flex: none;
+  width: var(--value-width);
+  box-sizing: border-box;
+  padding-left: 0.4rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .leader-bars .bar {
+    transition: width 200ms ease-out;
+  }
 }
