@@ -44,3 +44,10 @@ export function parseShare(text: string, name: string): ParseResult {
     },
   }
 }
+
+// Splits a tile row into whole emoji. An emoji can span several code
+export function splitEmojis(row: string): string[] {
+  return [...segmenter.segment(row)]
+    .map((part) => part.segment)
+    .filter((part) => part.trim() !== '')
+}
